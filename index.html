@@ -1,634 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>พรรคนิวเจน (New Gen) - คณะกรรมการสภานักเรียน</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Kanit', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 25%, #2d1b1b 50%, #1a0a1a 75%, #0a0a0a 100%);
-            color: #ffffff;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Enhanced background with particles */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            background: radial-gradient(circle, rgba(255, 68, 68, 0.8) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: float-particle 15s infinite linear;
-        }
-
-        .glow-orb {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 68, 68, 0.3) 0%, rgba(204, 0, 0, 0.1) 40%, transparent 70%);
-            filter: blur(1px);
-            animation: pulse-glow 4s ease-in-out infinite alternate;
-        }
-
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid rgba(255, 68, 68, 0.1);
-            z-index: 1000;
-            padding: 1rem 0;
-            transition: all 0.3s ease;
-        }
-
-        .navbar.scrolled {
-            background: rgba(0, 0, 0, 0.95);
-            box-shadow: 0 10px 40px rgba(255, 68, 68, 0.1);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(45deg, #ff4444, #ff6666, #ff4444);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-            animation: gradient-shift 3s ease-in-out infinite;
-            position: relative;
-        }
-
-        .logo::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent, rgba(255, 68, 68, 0.2), transparent);
-            animation: logo-shine 2s ease-in-out infinite;
-            z-index: -1;
-            border-radius: 8px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 3rem;
-        }
-
-        .nav-links a {
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 500;
-            position: relative;
-            padding: 0.5rem 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .nav-links a::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #ff4444, #cc0000);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-
-        .nav-links a:hover::before {
-            width: 100%;
-        }
-
-        .nav-links a:hover {
-            color: #ff4444;
-            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
-        }
-
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            background: radial-gradient(ellipse at center, rgba(255, 68, 68, 0.1) 0%, transparent 70%);
-        }
-
-        .hero-content {
-            z-index: 2;
-            animation: fadeInUp 1.5s ease-out;
-        }
-
-        .hero h1 {
-            font-size: 4.5rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(45deg, #ff4444, #ff6666, #ffaaaa, #ff4444);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradient-flow 4s ease-in-out infinite;
-            text-shadow: 0 0 30px rgba(255, 68, 68, 0.3);
-            position: relative;
-        }
-
-        .hero h1::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 3s linear infinite;
-        }
-
-        .hero p {
-            font-size: 1.4rem;
-            margin-bottom: 3rem;
-            opacity: 0.95;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            animation: pulse-text 2s ease-in-out infinite alternate;
-        }
-
-        .cta-button {
-            background: linear-gradient(45deg, #ff4444, #cc0000, #ff4444);
-            background-size: 200% 200%;
-            color: white;
-            padding: 1.2rem 3rem;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            display: inline-block;
-            border: 2px solid transparent;
-            box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
-        }
-
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .cta-button:hover::before {
-            left: 100%;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(255, 68, 68, 0.5);
-            background-position: 100% 100%;
-        }
-
-        .section {
-            padding: 6rem 0;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-left: 2rem;
-            padding-right: 2rem;
-            position: relative;
-        }
-
-        .section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 2px;
-            height: 100px;
-            background: linear-gradient(to bottom, transparent, #ff4444, transparent);
-            transform: translateX(-50%);
-        }
-
-        .section h2 {
-            font-size: 3rem;
-            margin-bottom: 4rem;
-            text-align: center;
-            background: linear-gradient(45deg, #ff4444, #ff6666);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-            animation: title-glow 3s ease-in-out infinite alternate;
-        }
-
-        .section h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #ff4444, transparent);
-            transform: translateX(-50%);
-            animation: line-expand 2s ease-in-out infinite;
-        }
-
-        .policies-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2.5rem;
-            margin-top: 4rem;
-        }
-
-        .policy-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 68, 68, 0.05));
-            backdrop-filter: blur(20px);
-            padding: 2.5rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 68, 68, 0.2);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            cursor: pointer;
-        }
-
-        .policy-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent, rgba(255, 68, 68, 0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .policy-card:hover::before {
-            opacity: 1;
-        }
-
-        .policy-card:hover {
-            transform: translateY(-15px) rotateX(5deg);
-            box-shadow: 0 25px 50px rgba(255, 68, 68, 0.3);
-            border-color: rgba(255, 68, 68, 0.5);
-        }
-
-        .policy-card h3 {
-            color: #ff4444;
-            margin-bottom: 1.5rem;
-            font-size: 1.4rem;
-            font-weight: 600;
-            text-shadow: 0 0 5px rgba(255, 68, 68, 0.3);
-        }
-
-        .policy-card p {
-            line-height: 1.7;
-            opacity: 0.9;
-        }
-
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 3rem;
-            margin-top: 4rem;
-        }
-
-        .team-member {
-            text-align: center;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 68, 68, 0.05));
-            padding: 3rem 2rem;
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            border: 1px solid rgba(255, 68, 68, 0.2);
-        }
-
-        .team-member::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at center, rgba(255, 68, 68, 0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .team-member:hover::before {
-            opacity: 1;
-        }
-
-        .team-member:hover {
-            transform: scale(1.08) rotateY(5deg);
-            box-shadow: 0 20px 40px rgba(255, 68, 68, 0.2);
-        }
-
-        .team-avatar {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #ff4444, #cc0000);
-            margin: 0 auto 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            border: 4px solid rgba(255, 68, 68, 0.3);
-            position: relative;
-            animation: avatar-pulse 3s ease-in-out infinite;
-        }
-        .team-avatar img {
-            width: 100%; /* ทำให้รูปภาพกว้างเท่ากับ parent (team-avatar div) */
-            height: 100%; /* ทำให้รูปภาพสูงเท่ากับ parent */
-            object-fit: cover; /* ครอปรูปภาพให้เต็มพื้นที่ โดยไม่บิดเบี้ยว */
-            border-radius: 50%; /* ทำให้รูปภาพเป็นวงกลม */
-            display: block; /* ลบช่องว่างด้านล่างรูปภาพบางครั้ง */
-        }
-
-        .team-avatar::after {
-            content: '';
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            right: -4px;
-            bottom: -4px;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, #ff4444, #cc0000, #ff4444);
-            z-index: -1;
-            animation: rotate-border 4s linear infinite;
-        }
-
-        .team-member h3 {
-            color: #ff4444;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .contact-form {
-            max-width: 700px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 68, 68, 0.05));
-            padding: 3rem;
-            border-radius: 20px;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 68, 68, 0.2);
-        }
-
-        .form-group {
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.8rem;
-            color: #ff4444;
-            font-weight: 500;
-            text-shadow: 0 0 5px rgba(255, 68, 68, 0.3);
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1.2rem;
-            border: 2px solid rgba(255, 68, 68, 0.3);
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 1rem;
-            font-family: 'Kanit', sans-serif;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #ff4444;
-            box-shadow: 0 0 20px rgba(255, 68, 68, 0.3);
-            transform: scale(1.02);
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .scroll-indicator {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 68, 68, 0.2);
-            z-index: 1001;
-        }
-
-        .scroll-progress {
-            height: 100%;
-            background: linear-gradient(90deg, #ff4444, #ff6666, #ff4444);
-            width: 0%;
-            transition: width 0.3s ease;
-            position: relative;
-        }
-
-        .scroll-progress::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 20px;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5));
-            animation: progress-shine 2s linear infinite;
-        }
-
-        .mobile-menu {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .mobile-menu span {
-            width: 25px;
-            height: 3px;
-            background: linear-gradient(90deg, #ff4444, #ff6666);
-            margin: 3px 0;
-            transition: 0.3s;
-            border-radius: 2px;
-        }
-
-        /* Enhanced Animations */
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        @keyframes logo-shine {
-            0%, 100% { opacity: 0; transform: translateX(-100%); }
-            50% { opacity: 1; transform: translateX(100%); }
-        }
-
-        @keyframes gradient-flow {
-            0%, 100% { background-position: 0% 0%; }
-            50% { background-position: 100% 100%; }
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        @keyframes pulse-text {
-            0% { opacity: 0.9; }
-            100% { opacity: 1; }
-        }
-
-        @keyframes title-glow {
-            0% { text-shadow: 0 0 10px rgba(255, 68, 68, 0.3); }
-            100% { text-shadow: 0 0 20px rgba(255, 68, 68, 0.6), 0 0 30px rgba(255, 68, 68, 0.3); }
-        }
-
-        @keyframes line-expand {
-            0%, 100% { width: 60px; }
-            50% { width: 100px; }
-        }
-
-        @keyframes avatar-pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 68, 68, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(255, 68, 68, 0.6); }
-        }
-
-        @keyframes rotate-border {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes float-particle {
-            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
-        }
-
-        @keyframes pulse-glow {
-            0% { transform: scale(1); opacity: 0.3; }
-            100% { transform: scale(1.2); opacity: 0.1; }
-        }
-
-        @keyframes progress-shine {
-            0% { transform: translateX(-20px); }
-            100% { transform: translateX(20px); }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 3rem;
-            }
-            
-            .hero p {
-                font-size: 1.1rem;
-            }
-            
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: rgba(0, 0, 0, 0.95);
-                backdrop-filter: blur(20px);
-                flex-direction: column;
-                padding: 2rem 0;
-                border-top: 1px solid rgba(255, 68, 68, 0.2);
-            }
-            
-            .nav-links.active {
-                display: flex;
-            }
-            
-            .mobile-menu {
-                display: flex;
-            }
-            
-            .policies-grid,
-            .team-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .section {
-                padding: 4rem 0;
-            }
-
-            .section h2 {
-                font-size: 2.2rem;
-            }
-        }
-
-        /* Extra visual enhancements */
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255, 68, 68, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            animation: pulse-glow 6s ease-in-out infinite;
-        }
-    </style>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <meta name="description" content="พรรคนิวเจน - เปลี่ยนแปลงเพื่ออนาคต ร่วมสร้างโรงเรียนที่ดีกว่าเดิม ด้วยความคิดใหม่และการทำงานเป็นทีม">
+    <meta name="keywords" content="สภานักเรียน, พรรคนิวเจน, New Gen, โรงเรียน, นโยบาย, กิจกรรม">
 </head>
 <body>
     <div class="bg-animation" id="bgAnimation"></div>
@@ -639,8 +18,8 @@
 
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#" class="logo">พรรคนิวเจน (New Gen)</a>
-            <div class="mobile-menu" onclick="toggleMenu()">
+            <a href="#home" class="logo">พรรคนิวเจน (New Gen)</a>
+            <div class="mobile-menu" id="mobileMenu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -649,9 +28,8 @@
                 <li><a href="#home">หน้าแรก</a></li>
                 <li><a href="#policies">นโยบาย</a></li>
                 <li><a href="#team">ทีมงาน</a></li>
-                <li><a href="#questionnaire">เเบบสอบถาม</a></li>
+                <li><a href="#questionnaire">แบบสอบถาม</a></li>
                 <li><a href="#contact">ติดต่อ</a></li>
-                
             </ul>
         </div>
     </nav>
@@ -667,27 +45,27 @@
     <section id="policies" class="section">
         <h2>นโยบายหลัก</h2>
         <div class="policies-grid">
-            <div class="policy-card">
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="100">
                 <h3>🎉 จัดกิจกรรมปฐมนิเทศรับน้อง</h3>
                 <p>การจัดกิจกรรมรับน้องในวันปฐมนิเทศ โดยใส่กิจกรรมสันทนาการ ร้องเล่น เต้นกับพี่ รวมทั้งการเล่นเกมเพื่อกระชับความสัมพันธ์ เข้าไปในวันปฐมนิเทศ</p>
             </div>
-            <div class="policy-card">
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="200">
                 <h3>🎤 Open Mic School</h3>
                 <p>เป็นการเปิดเวทีที่จะให้นักเรียนร่วมกันเสนอความคิดหรือโครงการที่อยากให้เกิดขึ้นกับโรงเรียน โดยสภานักเรียนจะรวบรวมและนำเสนอต่อผู้บริหารเพื่อพิจารณา</p>
             </div>
-            <div class="policy-card">
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="300">
                 <h3>💝 สภาฮีลใจ</h3>
                 <p>สร้างช่องทางที่นักเรียนสามารถพูดคุย ระบายความรู้สึก หรือขอคำปรึกษาได้อย่างสบายใจ โดยไม่รู้สึกถูกตัดสิน</p>
             </div>
-            <div class="policy-card">
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="400">
                 <h3>📄 กระดาษห่อความลับ</h3>
                 <p>กระดาษนี้เราจะจัดตั้งไว้บริการในห้องน้ำหญิงโดยเฉพาะ โดยเราจะรับบริจาคกระดาษเหลือใช้จากเพื่อนๆและคุณครู</p>
             </div>
-            <div class="policy-card">
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="500">
                 <h3>📚 แดนแห่งปัญญา</h3>
                 <p>เราจะมาพลิกโฉมห้องสมุด ให้เป็น "ห้องสมุดมีชีวิต" ที่น่าดึงดูดและเต็มไปด้วยแรงบันดาลใจ โดยจัดแสดงผลงานเด่นๆ ของนักเรียน และตกแต่งตามเทศกาลต่างๆ ตลอดปี</p>
             </div>
-            <div class="policy-card">
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="600">
                 <h3>🎨 ปลดล็อกพลังสร้างสรรค์</h3>
                 <p>เราจะเปิดพื้นที่ให้นักเรียนได้สร้างสรรค์และออกแบบโปสเตอร์ตามเทศกาลต่างๆ ในโรงเรียนอย่างเต็มที่ เพื่อโชว์ความสามารถและทำให้ทุกเทศกาลในโรงเรียนมีสีสันยิ่งขึ้น</p>
             </div>
@@ -697,34 +75,32 @@
     <section id="team" class="section">
         <h2>ทีมงานของเรา</h2>
         <div class="team-grid">
-            <div class="team-member">
+            <div class="team-member" data-aos="zoom-in" data-aos-delay="100">
                 <div class="team-avatar">
-                    <img src="images/fon.jpg" alt="รูปภาพประธานสภานักเรียน">
+                    <img src="images/fon.jpg" alt="รูปภาพประธานสภานักเรียน" onerror="this.style.display='none'; this.parentNode.innerHTML='👑';">
                 </div>
-                <h3>ประธานสภานักเรียน(นํ้าฝน)</h3>
+                <h3>ประธานสภานักเรียน (น้ำฝน)</h3>
                 <p>ผู้นำทีมและตัวแทนในการต่อรองกับฝ่ายบริหาร นำทีมในการดำเนินนโยบายต่างๆ</p>
             </div>
-          <div class="team-member">
+            <div class="team-member" data-aos="zoom-in" data-aos-delay="200">
                 <div class="team-avatar">
-                    <img src="images/amm.jpg" alt="รูปภาพรองประธานคนที่ 1">
+                    <img src="images/amm.jpg" alt="รูปภาพรองประธานคนที่ 1" onerror="this.style.display='none'; this.parentNode.innerHTML='🌟';">
                 </div>
-                <h3>รองประธานคนที่ 1(เเอม)</h3>
+                <h3>รองประธานคนที่ 1 (แอม)</h3>
                 <p>ผู้ช่วยในการบริหารและประสานงานโครงการต่างๆ ดูแลกิจกรรมนักเรียน</p>
             </div>
-
-            <div class="team-member">
+            <div class="team-member" data-aos="zoom-in" data-aos-delay="300">
                 <div class="team-avatar">
-                    <img src="images/jame.jpg" alt="รูปภาพรองประธานคนที่ 2">
+                    <img src="images/jame.jpg" alt="รูปภาพรองประธานคนที่ 2" onerror="this.style.display='none'; this.parentNode.innerHTML='⭐';">
                 </div>
-                <h3>รองประธานคนที่ 2(เจมส์)</h3>
+                <h3>รองประธานคนที่ 2 (เจมส์)</h3>
                 <p>ร่วมบริหารงานสภานักเรียน ดูแลความสัมพันธ์กับชุมชนและองค์กรภายนอก</p>
             </div>
-
-            <div class="team-member">
+            <div class="team-member" data-aos="zoom-in" data-aos-delay="400">
                 <div class="team-avatar">
-                    <img src="images/khaw.jpg" alt="รูปภาพเลขานุการ">
+                    <img src="images/khaw.jpg" alt="รูปภาพเลขานุการ" onerror="this.style.display='none'; this.parentNode.innerHTML='📝';">
                 </div>
-                <h3>เลขานุการ(ข้าว)</h3>
+                <h3>เลขานุการ (ข้าว)</h3>
                 <p>จัดการเอกสาร บันทึกการประชุม ประชาสัมพันธ์ และติดต่อประสานงาน</p>
             </div>
         </div>
@@ -732,26 +108,125 @@
 
     <section id="questionnaire" class="section">
         <h2>แบบสอบถาม</h2>
-        <p>เราต้องการความคิดเห็นและข้อเสนอแนะจากทุกคน เพื่อพัฒนานโยบายและกิจกรรมให้ตรงกับความต้องการของนักเรียนทุกคน</p>
-        <a href="https://forms.gle/ngGWReStYVbXK9rGA" class="cta-button">กรอกแบบสอบถาม</a>
+        <div class="questionnaire-content" data-aos="fade-up">
+            <p>เราต้องการความคิดเห็นและข้อเสนอแนะจากทุกคน เพื่อพัฒนานโยบายและกิจกรรมให้ตรงกับความต้องการของนักเรียนทุกคน</p>
+            <div class="questionnaire-stats">
+                <div class="stat-item">
+                    <span class="stat-number" data-target="150">0</span>
+                    <span class="stat-label">ผู้ตอบแบบสอบถาม</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="95">0</span>
+                    <span class="stat-label">% ความพึงพอใจ</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="12">0</span>
+                    <span class="stat-label">ข้อเสนอแนะ</span>
+                </div>
+            </div>
+            <a href="https://forms.gle/ngGWReStYVbXK9rGA" class="cta-button" target="_blank" rel="noopener noreferrer">กรอกแบบสอบถาม</a>
+        </div>
     </section>
 
     <section id="contact" class="section">
         <h2>ติดต่อเรา</h2>
-        <div class="contact-form">
-            <form id="contactForm">
-                <div class="form-group">
-                    <label for="name">ชื่อ-นามสกุล</label>
-                    <input type="text" id="name" name="name" placeholder="กรอกชื่อของคุณ" required>
+        <div class="contact-container">
+            <div class="contact-info" data-aos="fade-right">
+                <h3>ช่องทางการติดต่อ</h3>
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <div>
+                        <strong>อีเมล</strong>
+                        <p>newgen.student@school.ac.th</p>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="email">อีเมล</label>
-                    <input type="email" id="email" name="email" placeholder="กรอกอีเมลของคุณ" required>
+                <div class="contact-item">
+                    <span class="contact-icon">📱</span>
+                    <div>
+                        <strong>โซเชียลมีเดีย</strong>
+                        <p>@NewGenStudentCouncil</p>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="message">ข้อความ</label>
-                    <textarea id="message" name="message" rows="5" placeholder="แบ่งปันความคิดเห็นหรือข้อเสนอแนะ" required></textarea>
+                <div class="contact-item">
+                    <span class="contact-icon">🏫</span>
+                    <div>
+                        <strong>สถานที่</strong>
+                        <p>ห้องสภานักเรียน ชั้น 2 อาคารเรียน</p>
+                    </div>
                 </div>
-                <button type="submit" class="cta-button">ส่งข้อความ
-</button>
-            
+                <div class="contact-item">
+                    <span class="contact-icon">⏰</span>
+                    <div>
+                        <strong>เวลาทำการ</strong>
+                        <p>จันทร์-ศุกร์ 08:00-16:00 น.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form" data-aos="fade-left">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">ชื่อ-นามสกุล</label>
+                        <input type="text" id="name" name="name" placeholder="กรอกชื่อของคุณ" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">อีเมล</label>
+                        <input type="email" id="email" name="email" placeholder="กรอกอีเมลของคุณ" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">หัวข้อ</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">เลือกหัวข้อ</option>
+                            <option value="suggestion">ข้อเสนอแนะ</option>
+                            <option value="complaint">ข้อร้องเรียน</option>
+                            <option value="question">คำถาม</option>
+                            <option value="collaboration">ความร่วมมือ</option>
+                            <option value="other">อื่นๆ</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">ข้อความ</label>
+                        <textarea id="message" name="message" rows="5" placeholder="แบ่งปันความคิดเห็นหรือข้อเสนอแนะ" required></textarea>
+                    </div>
+                    <button type="submit" class="cta-button">ส่งข้อความ</button>
+                </form>
+                <div id="formMessage" class="form-message"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>พรรคนิวเจน (New Gen)</h3>
+                <p>เปลี่ยนแปลงเพื่ออนาคต ร่วมสร้างโรงเรียนที่ดีกว่าเดิม</p>
+            </div>
+            <div class="footer-section">
+                <h4>ลิงก์ด่วน</h4>
+                <ul>
+                    <li><a href="#home">หน้าแรก</a></li>
+                    <li><a href="#policies">นโยบาย</a></li>
+                    <li><a href="#team">ทีมงาน</a></li>
+                    <li><a href="#contact">ติดต่อ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>ติดตามเรา</h4>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">📘</a>
+                    <a href="#" aria-label="Instagram">📷</a>
+                    <a href="#" aria-label="Twitter">🐦</a>
+                    <a href="#" aria-label="YouTube">📺</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 พรรคนิวเจน (New Gen) - สภานักเรียน. สงวนลิขสิทธิ์.</p>
+        </div>
+    </footer>
+
+    <button id="backToTop" class="back-to-top" aria-label="กลับไปด้านบน">↑</button>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/animations.js"></script>
+</body>
+</html>
