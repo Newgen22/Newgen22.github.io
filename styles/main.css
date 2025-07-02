@@ -594,6 +594,7 @@ body {
     text-shadow: var(--shadow-glow);
 }
 
+
 .form-group input,
 .form-group textarea,
 .form-group select {
