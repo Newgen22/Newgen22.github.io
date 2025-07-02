@@ -747,6 +747,7 @@ body {
     transform: scale(1.1);
     box-shadow: var(--shadow-glow);
 }
+ 
 
 /* Animations */
 @keyframes gradient-shift {
