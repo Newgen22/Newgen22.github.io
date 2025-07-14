@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>พรรคนิวเจน (New Gen) - คณะกรรมการสภานักเรียน</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <meta name="description" content="พรรคนิวเจน - เปลี่ยนแปลงเพื่ออนาคต ร่วมสร้างโรงเรียนที่ดีกว่าเดิม ด้วยความคิดใหม่และการทำงานเป็นทีม">
+    <meta name="keywords" content="สภานักเรียน, พรรคนิวเจน, New Gen, โรงเรียน, นโยบาย, กิจกรรม">
+    <style>
+        /* เพิ่มสไตล์สำหรับเกม */
+        .game-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .game-title {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .game-description {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        #gameContainer {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            background: linear-gradient(to bottom, #87CEEB 0%, #87CEEB 70%, #98FB98 100%);
+            border: 3px solid #333;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            #gameContainer {
+                height: 300px;
+                max-width: 90%;
+            }
+            
+            .game-title {
+                font-size: 2rem;
+            }
+        }
+        
+        #bird {
+            position: absolute;
+            width: 30px;
+            height: 22px;
+            background: #ff0000;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            left: 80px;
+            top: 180px;
+            transition: transform 0.1s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        #bird:before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #000;
+            border-radius: 50%;
+            top: 6px;
+            right: 6px;
+        }
+        
+        .pipe {
+            position: absolute;
+            width: 45px;
+            background: #228B22;
+            border: 2px solid #006400;
+            border-radius: 5px;
+        }
+        
+        .pipe-top {
+            top: 0;
+        }
+        
+        .pipe-bottom {
+            bottom: 0;
+        }
+        
+        #score {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            z-index: 10;
+            background: rgba(255,255,255,0.8);
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+        
+        #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+            z-index: 20;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            max-width: 80%;
+        }
+        
+        #startButton, #restartButton {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        #startButton:hover, #restartButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        #instructions {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 20;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            max-width: 80%;
+        }
+        
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.8;
+        }
+        
+        .cloud:before {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+        }
+        
+        .cloud:after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .game-controls {
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .game-controls kbd {
+            background: #f8f9fa;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <div class="scroll-indicator">
+        <div class="scroll-progress" id="scrollProgress"></div>
+    </div>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">พรรคนิวเจน (New Gen)</a>
+            <div class="mobile-menu" id="mobileMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">หน้าแรก</a></li>
+                <li><a href="#policies">นโยบาย</a></li>
+                <li><a href="#team">ทีมงาน</a></li>
+                <li><a href="#questionnaire">แบบสอบถาม</a></li>
+                <li><a href="#game">เกมนก</a></li>
+                <li><a href="#contact">ติดต่อ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 data-text="เปลี่ยนแปลงเพื่ออนาคต">เปลี่ยนแปลงเพื่ออนาคต</h1>
+            <p>ร่วมสร้างโรงเรียนที่ดีกว่าเดิม ด้วยความคิดใหม่และการทำงานเป็นทีม</p>
+            <a href="#policies" class="cta-button">ดูนโยบายของเรา</a>
+        </div>
+    </section>
+
+    <section id="policies" class="section">
+        <h2>นโยบายหลัก</h2>
+        <div class="policies-grid">
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="100">
+                <h3>🎉 จัดกิจกรรมปฐมนิเทศรับน้อง</h3>
+                <p>การจัดกิจกรรมรับน้องในวันปฐมนิเทศ โดยใส่กิจกรรมสันทนาการ ร้องเล่น เต้นกับพี่ รวมทั้งการเล่นเกมเพื่อกระชับความสัมพันธ์ เข้าไปในวันปฐมนิเทศ</p>
+            </div>
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="200">
+                <h3>🎤 Open Mic School</h3>
+                <p>เป็นการเปิดเวทีที่จะให้นักเรียนร่วมกันเสนอความคิดหรือโครงการที่อยากให้เกิดขึ้นกับโรงเรียน โดยสภานักเรียนจะรวบรวมและนำเสนอต่อผู้บริหารเพื่อพิจารณา</p>
+            </div>
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="300">
+                <h3>💝 สภาฮีลใจ</h3>
+                <p>สร้างช่องทางที่นักเรียนสามารถพูดคุย ระบายความรู้สึก หรือขอคำปรึกษาได้อย่างสบายใจ โดยไม่รู้สึกถูกตัดสิน</p>
+            </div>
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="400">
+                <h3>📄 กระดาษห่อความลับ</h3>
+                <p>กระดาษนี้เราจะจัดตั้งไว้บริการในห้องน้ำหญิงโดยเฉพาะ โดยเราจะรับบริจาคกระดาษเหลือใช้จากเพื่อนๆและคุณครู</p>
+            </div>
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="500">
+                <h3>📚 แดนแห่งปัญญา</h3>
+                <p>เราจะมาพลิกโฉมห้องสมุด ให้เป็น "ห้องสมุดมีชีวิต" ที่น่าดึงดูดและเต็มไปด้วยแรงบันดาลใจ โดยจัดแสดงผลงานเด่นๆ ของนักเรียน และตกแต่งตามเทศกาลต่างๆ ตลอดปี</p>
+            </div>
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="600">
+                <h3>🎨 ปลดล็อกพลังสร้างสรรค์</h3>
+                <p>เราจะเปิดพื้นที่ให้นักเรียนได้สร้างสรรค์และออกแบบโปสเตอร์ตามเทศกาลต่างๆ ในโรงเรียนอย่างเต็มที่ เพื่อโชว์ความสามารถและทำให้ทุกเทศกาลในโรงเรียนมีสีสันยิ่งขึ้น</p>
+            </div>
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="600">
+                <h3>🔥 ปลุกประการไฟ</h3>
+                <p>เราจะเปิดพื้นที่ให้นักเรียนได้สร้างสรรค์และออกแบบโปสเตอร์ตามเทศกาลต่างๆ ในโรงเรียนอย่างเต็มที่ เพื่อโชว์ความสามารถและทำให้ทุกเทศกาลในโรงเรียนมีสีสันยิ่งขึ้นประกวดดาวเดือนประจำโรงเรียนจัดขึ้นเพื่อให้นักเรียน ทุกคนที่ต้องการจะแสดงศักยภาพหรือแสดงออกความเป็นตัวเอง ที่สามารถเข้าร่วมได้ทุกเพศทุกวัย ไม่ว่าจะเป็น ชาย หญิง หรือ LGBTQ</p>
+            </div>
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="600">
+                <h3>🚽 สุขาดีมีความสุข</h3>
+                <p>แก้ปัญหากลิ่นไม่พึงประสงค์ในห้องน้ำ โดยการฉีดสเปย์ปรับอากาศและถุงหอมดับกลิ่นที่ทำมาจากใบเตยและมะกรูดที่ทำจากธรรมชาติ วัสดุใกล้ตัวเราจะเปิดพื้นที่ให้นักเรียนได้สร้างสรรค์และออกแบบโปสเตอร์ตามเทศกาลต่างๆ ในโรงเรียนอย่างเต็มที่ เพื่อโชว์ความสามารถและทำให้ทุกเทศกาลในโรงเรียนมีสีสันยิ่งขึ้น</p>
+            </div>
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="600">
+                <h3>🎮 เปิดการแข่งขัน  E-sports</h3>
+                <p>สานต่อ สภา2566 รับสมัครนักเล่นเกมมือโปรเพื่อมาแข่งขัน  และฝึกทักษะการเล่น ให้มุ่งไปสู่นักเล่นมืออาชีพ โดนเรามีพี่ที่มีประสบการณ์ที่คอยแนะนำ</p>
+            </div>
+            <div class="policy-card" data-aos="fade-up" data-aos-delay="600">
+                <h3> 📌 ฝากบอกของดี</h3>
+                <p>สานต่อ สภา2567 เปิดทางช่องทางให้เพื่อนๆได้นำสินค้า หรือร้านเด็ด ที่ทุกคนคิดว่าน่าสนใจ มาบอกต่อกันผ่านช่องทาง ที่ทางเราเตรียมให้ โดยจะจัดในทุกๆเดือน</p>
+            </div>
+             <div class="policy-card" data-aos="fade-up" data-aos-delay="600">
+                <h3> 📌 ฝากบอกของดี</h3>
+                <p>สานต่อ สภา2567 เปิดทางช่องทางให้เพื่อนๆได้นำสินค้า หรือร้านเด็ด ที่ทุกคนคิดว่าน่าสนใจ มาบอกต่อกันผ่านช่องทาง ที่ทางเราเตรียมให้ โดยจะจัดในทุกๆเดือน</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="team" class="section">
+        <h2>ทีมงานของเรา</h2>
+        <div class="team-grid">
+            <div class="team-member" data-aos="zoom-in" data-aos-delay="100">
+                <div class="team-avatar">
+                    <img src="images/fon.jpg" alt="รูปภาพประธานสภานักเรียน" onerror="this.style.display='none'; this.parentNode.innerHTML='👑';">
+                </div>
+                <h3>ประธานสภานักเรียน (น้ำฝน)</h3>
+                <p>ผู้นำทีมและตัวแทนในการต่อรองกับฝ่ายบริหาร นำทีมในการดำเนินนโยบายต่างๆ</p>
+            </div>
+            <div class="team-member" data-aos="zoom-in" data-aos-delay="200">
+                <div class="team-avatar">
+                    <img src="images/amm.jpg" alt="รูปภาพรองประธานคนที่ 1" onerror="this.style.display='none'; this.parentNode.innerHTML='🌟';">
+                </div>
+                <h3>รองประธานคนที่ 1 (แอม)</h3>
+                <p>ผู้ช่วยในการบริหารและประสานงานโครงการต่างๆ ดูแลกิจกรรมนักเรียน</p>
+            </div>
+            <div class="team-member" data-aos="zoom-in" data-aos-delay="300">
+                <div class="team-avatar">
+                    <img src="images/jame.jpg" alt="รูปภาพรองประธานคนที่ 2" onerror="this.style.display='none'; this.parentNode.innerHTML='⭐';">
+                </div>
+                <h3>รองประธานคนที่ 2 (เจมส์)</h3>
+                <p>ร่วมบริหารงานสภานักเรียน ดูแลความสัมพันธ์กับชุมชนและองค์กรภายนอก</p>
+            </div>
+            <div class="team-member" data-aos="zoom-in" data-aos-delay="400">
+                <div class="team-avatar">
+                    <img src="images/khaw.jpg" alt="รูปภาพเลขานุการ" onerror="this.style.display='none'; this.parentNode.innerHTML='📝';">
+                </div>
+                <h3>เลขานุการ (ข้าว)</h3>
+                <p>จัดการเอกสาร บันทึกการประชุม ประชาสัมพันธ์ และติดต่อประสานงาน</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="questionnaire" class="section">
+        <h2>แบบสอบถาม</h2>
+        <div class="questionnaire-content" data-aos="fade-up">
+            <p>เราต้องการความคิดเห็นและข้อเสนอแนะจากทุกคน เพื่อพัฒนานโยบายและกิจกรรมให้ตรงกับความต้องการของนักเรียนทุกคน</p>
+            <div class="questionnaire-stats">
+                <div class="stat-item">
+                    <span class="stat-number" data-target="150">0</span>
+                    <span class="stat-label">ผู้ตอบแบบสอบถาม</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="95">0</span>
+                    <span class="stat-label">% ความพึงพอใจ</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="12">0</span>
+                    <span class="stat-label">ข้อเสนอแนะ</span>
+                </div>
+            </div>
+            <a href="https://forms.gle/ngGWReStYVbXK9rGA" class="cta-button" target="_blank" rel="noopener noreferrer">กรอกแบบสอบถาม</a>
+        </div>
+    </section>
+
+    <section id="game" class="game-section">
+        <div class="game-container">
+            <h2 class="game-title">🐦 เกมนกบินหลบเสา</h2>
+            <p class="game-description">เกมสนุกๆ จากทีมนิวเจน! ช่วยนกน้อยบินหลบเสาให้ได้มากที่สุด</p>
+            
+            <div id="gameContainer">
+                <div id="score">คะแนน: 0</div>
+                
+                <div id="bird"></div>
+                
+                <div id="instructions">
+                    <h3>🎮 วิธีเล่น</h3>
+                    <p>กดเว้นวรรค หรือ คลิกหน้าจอ เพื่อให้นกบิน</p>
+                    <p>หลบเสาให้ได้มากที่สุด!</p>
+                    <button id="startButton">เริ่มเกม</button>
+                </div>
+                
+                <div id="gameOver">
+                    <h3>🎮 เกมจบแล้ว!</h3>
+                    <p id="finalScore">คะแนนของคุณ: 0</p>
+                    <button id="restartButton">เล่นใหม่</button>
+                </div>
+            </div>
+            
+            <div class="game-controls">
+                <p>💡 เคล็ดลับ: กด <kbd>Space</kbd> บนคีย์บอร์ด หรือแตะหน้าจอเพื่อให้นกบินขึ้น</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <h2>ติดต่อเรา</h2>
+        <div class="contact-container">
+            <div class="contact-info" data-aos="fade-right">
+                <h3>ช่องทางการติดต่อ</h3>
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <div>
+                        <strong>อีเมล</strong>
+                        <p>newgenerationpaty@gmail.com</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📱</span>
+                    <div>
+                        <strong>โซเชียลมีเดีย Instagram</strong>
+                        <p>new.generation.pa</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">🏫</span>
+                    <div>
+                        <strong>ติดต่อผ่านบุคคลโดยตรง</strong>
+                        <p>อาคาร2สีชมพูห้อง ม.5/1</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">⏰</span>
+                    <div>
+                        <strong>เวลาทำการ</strong>
+                        <p>จันทร์-ศุกร์ 08:00-16:00 น.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form" data-aos="fade-left">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">ชื่อ-นามสกุล</label>
+                        <input type="text" id="name" name="name" placeholder="กรอกชื่อของคุณ" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">อีเมล</label>
+                        <input type="email" id="email" name="email" placeholder="กรอกอีเมลของคุณ" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">หัวข้อ</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">เลือกหัวข้อ</option>
+                            <option value="suggestion">ข้อเสนอแนะ</option>
+                            <option value="complaint">ข้อร้องเรียน</option>
+                            <option value="question">คำถาม</option>
+                            <option value="collaboration">ความร่วมมือ</option>
+                            <option value="other">อื่นๆ</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">ข้อความ</label>
+                        <textarea id="message" name="message" rows="5" placeholder="แบ่งปันความคิดเห็นหรือข้อเสนอแนะ" required></textarea>
+                    </div>
+                    <button type="submit" class="cta-button">ส่งข้อความ</button>
+                </form>
+                <div id="formMessage" class="form-message"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>พรรคนิวเจน (New Gen)</h3>
+                <p>เปลี่ยนแปลงเพื่ออนาคต ร่วมสร้างโรงเรียนที่ดีกว่าเดิม</p>
+            </div>
+            <div class="footer-section">
+                <h4>ลิงก์ด่วน</h4>
+                <ul>
+                    <li><a href="#home">หน้าแรก</a></li>
+                    <li><a href="#policies">นโยบาย</a></li>
+                    <li><a href="#team">ทีมงาน</a></li>
+                    <li><a href="#questionnaire">แบบสอบถาม</a></li>
+                    <li><a href="#game">เกมนก</a></li>
+                    <li><a href="#contact">ติดต่อ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>ติดตามเรา</h4>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">📘</a>
+                    <a href="#" aria-label="Instagram">📷</a>
+                    <a href="#" aria-label="Twitter">🐦</a>
+                    <a href="#" aria-label="YouTube">📺</a>
+                </div>  
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 พรรคนิวเจน (New Gen) - สภานักเรียน. สงวนลิขสิทธิ์.</p>
+        </div>
+    </footer>
+
+    <button id="backToTop" class="back-to-top" aria-label="กลับไปด้านบน">↑</button>
+    <button onclick="game.debugGameState()">Debug</button>
+    <button onclick="game.forceCleanup()">Force Clean</button>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/animations.js"></script>   
+    <script src="scripts/scripts-game.js"></script>
+</body>
+</html>
